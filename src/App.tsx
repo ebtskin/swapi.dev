@@ -1,25 +1,26 @@
-import React from 'react';
-import logo from './logo.svg';
 import './App.css';
+import { StarWar } from './Pages/StarWar';
+import {TableList} from './components/TableList';
+import { Paper } from "@mui/material";
+import {useState} from "react";
 
 function App() {
+	const [title, setTitle] = useState<string>('');
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+		<Paper
+			sx={{
+				padding: "32px",
+				width: "100vw",
+				margin: "10px",
+				borderTop: 5,
+				borderColor: "#3c8dbc",
+			}}
+		>
+			<div className="App">
+				<StarWar title={title} setTitle={setTitle}/>
+				<TableList title={title || "people"}/>
+			</div>
+		</Paper>
   );
 }
 
