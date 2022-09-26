@@ -112,12 +112,16 @@ function TRow({
 					<DeleteForeverIcon
 						onClick={() => handleDelete(row.name)}
 						fontSize="large"
-						color="error"
+						sx={{ color: "#e91e63" }}
 					/>
 				</TableCell>
 			</TableRow>
 
-			<CollapseRow title={title} openTitle={openTitle} expandInfo={expandInfo}/>
+			<CollapseRow
+				title={title}
+				openTitle={openTitle}
+				expandInfo={expandInfo}
+			/>
 		</>
 	);
 }

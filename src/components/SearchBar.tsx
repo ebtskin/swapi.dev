@@ -3,9 +3,10 @@
 import { Stack, TextField, Button, InputAdornment } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import {InputProps} from '../Assets/Props';
+import Sort from "./Sort";
 
 
-const SearchItem = ({ search, setSearch }: InputProps) => {
+const SearchItem = ({ search, setSearch, handleSort }: InputProps) => {
 	return (
 		<Stack
 		direction='row'
@@ -48,6 +49,7 @@ const SearchItem = ({ search, setSearch }: InputProps) => {
 					>
 						Search
 					</Button>
+					<Sort handleSort={handleSort}/>
 				</Stack>
 			</form>
 		</Stack>

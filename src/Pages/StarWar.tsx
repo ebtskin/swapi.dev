@@ -7,20 +7,16 @@ import ViewListIcon from "@mui/icons-material/ViewList";
 import ViewModuleIcon from "@mui/icons-material/ViewModule";
 import TitleButton from "../components/TitleButton";
 import { options } from '../Assets/Data';
+import * as types from '../Assets/Props';
 
-export const StarWar = ({
-	setTitle, title
-}: {
-	title: string,
-	setTitle: React.Dispatch<React.SetStateAction<string>>;
-}) => {
-	const [view, setView] = useState<string>("list");
+export const StarWar = ({ title, setTitle, onToggleView, view }: types.ToggleProps) => {
+	const [search, setSearch] = useState<string>("");
 
 	const handleToggleView = (
 		event: React.MouseEvent<HTMLElement>,
 		nextView: string
 	) => {
-		setView(nextView);
+		onToggleView(nextView as types.ViewProps);
 	};
 
 	return (

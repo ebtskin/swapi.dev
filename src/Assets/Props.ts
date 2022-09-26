@@ -20,9 +20,23 @@ export type RowProps = {
 	url: string;
 };
 
+export type ViewProps = 'list' | 'module'
+
+export interface ToggleProps {
+	view: ViewProps;
+	onToggleView: (nextView: ViewProps) => void;
+	title: string;
+	setTitle: React.Dispatch<React.SetStateAction<string>>;
+};
+
 export type InputProps = {
 	search: string;
 	setSearch: (event: React.ChangeEvent<HTMLInputElement>) => void;
+	handleSort: () => void;
+};
+
+export type SortProps = {
+	handleSort: () => void;
 };
 
 export type QueryProps = {

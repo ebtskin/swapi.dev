@@ -2,7 +2,15 @@
 
 import { useState, useEffect } from "react";
 import TRow from "./TableRow";
-import { Stack,Button, Paper, Table, TableBody, TableContainer, Typography} from "@mui/material";
+import {
+	Stack,
+	Button,
+	Paper,
+	Table,
+	TableBody,
+	TableContainer,
+	Typography,
+} from "@mui/material";
 import TableHeading from "../components/TableHeading";
 import PageButton from "../components/PageButton";
 import KeyboardDoubleArrowLeftIcon from "@mui/icons-material/KeyboardDoubleArrowLeft";
@@ -11,10 +19,11 @@ import { useStarWars } from "../hooks/useStarWars";
 import Loading from "./Loading";
 import { RowProps } from "../Assets/Props";
 import SearchItem from "../components/SearchBar";
+import Sort from "./Sort";
 
 export function TableList({ title }: { title: string }) {
 	const [page, setPage] = useState<number>(1);
-	const [listData, setListData] = useState([]);
+	const [listData, setListData] = useState<RowProps | any>([]);
 	const [expand, setExpand] = useState<boolean>(false);
 	const [search, setSearch] = useState<string>("");
 	const [searchResult, setSearchResult] = useState([]);
@@ -53,9 +62,17 @@ export function TableList({ title }: { title: string }) {
 		}
 	};
 
+	const handleSort = () => {
+		const sortedList = listData.sort((item1: RowProps, item2: RowProps) => {
+			return item1.name.localeCompare(item2.name);
+		});
+		setSearchResult(sortedList);
+		console.log("sorted", sortedList);
+	};
+
 	const totalPages = Math.ceil(starWarsData?.count / 10) || null;
 
-	//setting up pagination 
+	//setting up pagination
 	let pageArray;
 	if (totalPages) {
 		pageArray = Array.from(Array(totalPages), (_, i) => i + 1);
@@ -83,6 +100,7 @@ export function TableList({ title }: { title: string }) {
 				<SearchItem
 					search={search}
 					setSearch={(event) => setSearch(event.target.value)}
+					handleSort={handleSort} 
 				/>
 			</Stack>
 
@@ -91,7 +109,6 @@ export function TableList({ title }: { title: string }) {
 					<Typography variant="h2">Empty List</Typography>)
 				</Stack>
 			)}
-
 			{listData && (
 				<Stack>
 					<TableContainer component={Paper}>
