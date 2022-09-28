@@ -19,7 +19,6 @@ import { useStarWars } from "../hooks/useStarWars";
 import Loading from "./Loading";
 import { RowProps } from "../Assets/Props";
 import SearchItem from "../components/SearchBar";
-import Sort from "./Sort";
 import { IStartWar } from "../Assets/Props";
 
 export function TableList({ title }: { title: string }) {
@@ -37,7 +36,7 @@ export function TableList({ title }: { title: string }) {
 	} = useStarWars({ title, page, expand });
 
 	useEffect(() => {
-		const filteredResult = listData?.filter((item: IStartWar) => {
+		const filteredResult = listData?.filter((item: {name: string, title: string}) => {
 			if (item?.name) {
 				return item.name
 					.toLocaleLowerCase()
@@ -56,7 +55,7 @@ export function TableList({ title }: { title: string }) {
 
 	const handleDelete = (deleteId: string) => {
 		if (deleteId) {
-			const newList = listData.filter((item: RowProps) => {
+			const newList = listData.filter((item: IStartWar) => {
 				return item?.name !== deleteId;
 			});
 			setListData(newList);
@@ -64,8 +63,12 @@ export function TableList({ title }: { title: string }) {
 	};
 
 	const handleSort = () => {
-		const sortedList = listData.sort((item1: RowProps, item2: RowProps) => {
-			return item1.name.localeCompare(item2.name);
+		const sortedList = listData.sort((item1: {name:string}, item2: {name: string}):number => {
+			if(item1.name && item2.name){
+				return item1.name.localeCompare(item2.name);
+			}
+			return 0;
+			
 		});
 		setSearchResult(sortedList);
 	};
