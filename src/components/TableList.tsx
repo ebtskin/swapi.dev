@@ -20,6 +20,7 @@ import Loading from "./Loading";
 import { RowProps } from "../Assets/Props";
 import SearchItem from "../components/SearchBar";
 import Sort from "./Sort";
+import { IStartWar } from "../Assets/Props";
 
 export function TableList({ title }: { title: string }) {
 	const [page, setPage] = useState<number>(1);
@@ -36,13 +37,13 @@ export function TableList({ title }: { title: string }) {
 	} = useStarWars({ title, page, expand });
 
 	useEffect(() => {
-		const filteredResult = listData?.filter((item: RowProps) => {
-			if (item?.title) {
-				return item.title
+		const filteredResult = listData?.filter((item: IStartWar) => {
+			if (item?.name) {
+				return item.name
 					.toLocaleLowerCase()
 					.includes(search.toLocaleLowerCase());
 			}
-			return item?.name
+			return item?.title
 				?.toLocaleLowerCase()
 				.includes(search.toLocaleLowerCase());
 		});
@@ -67,7 +68,6 @@ export function TableList({ title }: { title: string }) {
 			return item1.name.localeCompare(item2.name);
 		});
 		setSearchResult(sortedList);
-		console.log("sorted", sortedList);
 	};
 
 	const totalPages = Math.ceil(starWarsData?.count / 10) || null;
