@@ -1,12 +1,13 @@
 /** @format */
 
 import { TableRow, TableHead, TableCell, Box} from "@mui/material";
+import {IHeading} from "../Assets/Props";
 
-const TableHeading = ({ heading }: { heading: any }) => {
+const TableHeading = ({ heading }: IHeading) => {
 	return (
 		<TableHead sx={{ backgroundColor: "#e3f2fd" }}>
 			<TableRow>
-				{heading.map((title: any) => {
+				{heading.map((title: string) => {
 					if (title === "url") return;
 					return (
 						<TableCell key={title} align="center">

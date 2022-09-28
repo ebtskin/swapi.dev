@@ -1,5 +1,9 @@
 /** @format */
 
+export type IHeading = {
+	heading: string[];
+};
+
 export type RowProps = {
 	name: string;
 	title?: string;
