@@ -36,16 +36,18 @@ export function TableList({ title }: { title: string }) {
 	} = useStarWars({ title, page, expand });
 
 	useEffect(() => {
-		const filteredResult = listData?.filter((item: {name: string, title: string}) => {
-			if (item?.name) {
-				return item.name
-					.toLocaleLowerCase()
+		const filteredResult = listData?.filter(
+			(item: { name: string; title: string }) => {
+				if (item?.name) {
+					return item.name
+						.toLocaleLowerCase()
+						.includes(search.toLocaleLowerCase());
+				}
+				return item?.title
+					?.toLocaleLowerCase()
 					.includes(search.toLocaleLowerCase());
 			}
-			return item?.title
-				?.toLocaleLowerCase()
-				.includes(search.toLocaleLowerCase());
-		});
+		);
 		setSearchResult(filteredResult);
 	}, [search, listData]);
 
@@ -53,7 +55,7 @@ export function TableList({ title }: { title: string }) {
 		setListData(starWarsData?.results);
 	}, [starWarsData]);
 
-	const handleDelete = (deleteId: string) => {
+	const handleDelete = (deleteId: string | undefined) => {
 		if (deleteId) {
 			const newList = listData.filter((item: IStartWar) => {
 				return item?.name !== deleteId;
@@ -63,13 +65,14 @@ export function TableList({ title }: { title: string }) {
 	};
 
 	const handleSort = () => {
-		const sortedList = listData.sort((item1: {name:string}, item2: {name: string}):number => {
-			if(item1.name && item2.name){
-				return item1.name.localeCompare(item2.name);
+		const sortedList = listData.sort(
+			(item1: { name: string }, item2: { name: string }): number => {
+				if (item1.name && item2.name) {
+					return item1.name.localeCompare(item2.name);
+				}
+				return 0;
 			}
-			return 0;
-			
-		});
+		);
 		setSearchResult(sortedList);
 	};
 
@@ -92,7 +95,7 @@ export function TableList({ title }: { title: string }) {
 	if (isError) {
 		return (
 			<Stack direction="row" justifyContent="center">
-				<Typography variant="h2">An error has occured!</Typography>
+				<Typography variant="h2">An error has occured</Typography>
 			</Stack>
 		);
 	}
@@ -103,12 +106,12 @@ export function TableList({ title }: { title: string }) {
 				<SearchItem
 					search={search}
 					setSearch={(event) => setSearch(event.target.value)}
-					handleSort={handleSort} 
+					handleSort={handleSort}
 				/>
 			</Stack>
 
 			{!listData && (
-				<Stack direction="row">
+				<Stack direction="row" justifyContent="center">
 					<Typography variant="h2">Empty List</Typography>)
 				</Stack>
 			)}
@@ -118,13 +121,18 @@ export function TableList({ title }: { title: string }) {
 						<Table aria-label="collapsible table">
 							<TableHeading heading={Object.keys(listData[0])} />
 							<TableBody>
-								{searchResult?.map((person: RowProps) => (
-									<TRow
-										key={person.name}
-										row={person}
-										handleDelete={handleDelete}
-									/>
-								))}
+								{searchResult?.map(
+									(starWarsData: IStartWar) => (
+										<TRow
+											key={
+												starWarsData.name ||
+												starWarsData.title
+											}
+											row={starWarsData}
+											handleDelete={handleDelete}
+										/>
+									)
+								)}
 							</TableBody>
 						</Table>
 					</TableContainer>

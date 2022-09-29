@@ -6,15 +6,15 @@ import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import { format, parseISO} from "date-fns";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
-import {RowProp} from "../Assets/Props";
+import {IStartWar, RowProp} from "../Assets/Props";
 import CollapseRow from "./CollapseRow";
 
 function TRow({
 	row,
 	handleDelete,
 }: {
-	row: RowProp;
-	handleDelete: (deleteId: string) => void;
+	row: IStartWar;
+	handleDelete: (deleteId: string | undefined) => void;
 }) {
 	const [expand, setExpand] = useState(false);
 	const [expandInfo, setExpandInfo] = useState<any>([]);
@@ -50,12 +50,11 @@ function TRow({
 		<>
 			<TableRow sx={{ "& > *": { borderBottom: "unset" } }}>
 				{Object.keys(row).map((key, index) => {
+					let col = row[key as keyof IStartWar];
 					if (key === "url") return;
 					if (
 						key === "homeworld" ||
-						key === "url" ||
-						(typeof row[key as keyof RowProp] === "object" &&
-							row[key as keyof RowProp].length > 0)
+						(Array.isArray(col) && col.length > 0)
 					) {
 						return (
 							<TableCell key={key} align="center">
@@ -64,7 +63,7 @@ function TRow({
 									size="small"
 									onClick={() =>
 										handleExpand(
-											row[key as keyof RowProp],
+											col,
 											key
 										)
 									}
@@ -84,8 +83,8 @@ function TRow({
 							</TableCell>
 						);
 					} else if (
-						typeof row[key as keyof RowProp] === "object" &&
-						row[key as keyof RowProp].length === 0
+						Array.isArray(col) &&
+						col.length === 0
 					) {
 						return (
 							<TableCell key={key} align="center">
@@ -104,13 +103,13 @@ function TRow({
 					//display regular cell without expand
 					return (
 						<TableCell key={key} align="center">
-							{row[key as keyof RowProp]}
+							{col}
 						</TableCell>
 					);
 				})}
 				<TableCell align="center">
 					<DeleteForeverIcon
-						onClick={() => handleDelete(row.name)}
+						onClick={() => row.name ? handleDelete(row?.name) : handleDelete(row?.title)}
 						fontSize="large"
 						sx={{ color: "#e91e63" }}
 					/>

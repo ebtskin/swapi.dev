@@ -198,4 +198,8 @@ export type ISpecie = {
 	url: string;
 };
 
-export type IStartWar = IPeople | IFilm | IPlanet | IStarship | ISpecie;
+export type Keys = {
+	key: string;
+}
+
+export type IStartWar = IPeople | IFilm | IPlanet | IStarship | ISpecie 

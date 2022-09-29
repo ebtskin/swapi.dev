@@ -5,12 +5,15 @@ import InfiniteScroll from "react-infinite-scroller";
 import starwars from "../APIs/starwars";
 import Card from "./Card";
 import Loading from "./Loading";
+import { useStarWars } from "../hooks/useStarWars";
 
 export function CardList({ title }: { title: string }) {
 	const [items, setItems] = useState<any>([]);
 	const [page, setPage] = useState(0);
 
 	const [fetching, setFetching] = useState(false);
+
+	console.log(title);
 
 	const fetchItems = useCallback(async () => {
 		if (fetching) {
@@ -28,10 +31,8 @@ export function CardList({ title }: { title: string }) {
 
 			const results = data ? data.results : [];
 
-            console.log("data", data)
-
 			setItems([...items, ...results]);
-
+			console.log("data is: ", items);
 			if (data && data.next) {
 				setPage(page + 1);
 			} else {
@@ -51,12 +52,13 @@ export function CardList({ title }: { title: string }) {
 	);
 
 	return (
+		
 		<InfiniteScroll
 			loadMore={fetchItems}
 			hasMore={hasMoreItems}
 			loader={loader}
 		>
-			{items.map((item : any) => {
+			{items.map((item: any) => {
 				const cardProps = {
 					title,
 					name: item.name,
