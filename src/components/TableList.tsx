@@ -4,7 +4,6 @@ import { useState, useEffect } from "react";
 import TRow from "./TableRow";
 import {
 	Stack,
-	Button,
 	Paper,
 	Table,
 	TableBody,
@@ -12,14 +11,13 @@ import {
 	Typography,
 } from "@mui/material";
 import TableHeading from "../components/TableHeading";
-import PageButton from "../components/PageButton";
-import KeyboardDoubleArrowLeftIcon from "@mui/icons-material/KeyboardDoubleArrowLeft";
-import KeyboardDoubleArrowRightIcon from "@mui/icons-material/KeyboardDoubleArrowRight";
+
 import { useStarWars } from "../hooks/useStarWars";
 import Loading from "./Loading";
 import { RowProps } from "../Assets/Props";
 import SearchItem from "../components/SearchBar";
 import { IStartWar } from "../Assets/Props";
+import Pagination from "./Pagination";
 
 export function TableList({ title }: { title: string }) {
 	const [page, setPage] = useState<number>(1);
@@ -78,15 +76,6 @@ export function TableList({ title }: { title: string }) {
 
 	const totalPages = Math.ceil(starWarsData?.count / 10) || null;
 
-	//setting up pagination
-	let pageArray;
-	if (totalPages) {
-		pageArray = Array.from(Array(totalPages), (_, i) => i + 1);
-	}
-
-	const lastPage = () => setPage(Number(totalPages));
-	const firstPage = () => setPage(1);
-
 	//Loading spinner
 	if (isLoading) {
 		return <Loading size="15rem" />;
@@ -138,28 +127,12 @@ export function TableList({ title }: { title: string }) {
 					</TableContainer>
 
 					<Stack direction="row" sx={{ marginTop: 3 }}>
-						<Button
-							variant="contained"
-							onClick={firstPage}
-							disabled={isPreviousData || page === 1}
-						>
-							<KeyboardDoubleArrowLeftIcon />
-						</Button>
-
-						{pageArray?.map((page) => (
-							<PageButton
-								key={page}
-								page={page}
-								setPage={setPage}
-							/>
-						))}
-						<Button
-							variant="contained"
-							onClick={lastPage}
-							disabled={isPreviousData || page === totalPages}
-						>
-							<KeyboardDoubleArrowRightIcon />
-						</Button>
+						<Pagination
+							pageCount={starWarsData?.count}
+							isPreviousData={isPreviousData}
+							page={page}
+							setPage={setPage}
+						/>
 					</Stack>
 				</Stack>
 			)}
